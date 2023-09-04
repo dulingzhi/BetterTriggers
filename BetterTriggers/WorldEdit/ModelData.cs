@@ -41,8 +41,8 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                CASCFile cascFile = (CASCFile)units.Entries["abilityskin.txt"];
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["units"];
+                CASCFile cascFile = (CASCFile)units.Files["abilityskin.txt"];
                 abilityskin = Casc.GetCasc().OpenFile(cascFile.FullName);
             }
 

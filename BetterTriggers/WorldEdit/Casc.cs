@@ -59,7 +59,7 @@ namespace BetterTriggers.WorldEdit
                 var casc = GetCasc();
                 var fldr = casc.Root.SetFlags(LocaleFlags.enGB, false);
                 casc.Root.MergeInstall(casc.Install);
-                war3_w3mod = (CASCFolder)fldr.Entries["War3.w3mod"];
+                war3_w3mod = (CASCFolder)fldr.Folders["War3.w3mod"];
             }
 
             return war3_w3mod;
@@ -72,7 +72,7 @@ namespace BetterTriggers.WorldEdit
                 var casc = GetCasc();
                 var fldr = casc.Root.SetFlags(LocaleFlags.enGB, false);
                 casc.Root.MergeInstall(casc.Install);
-                war3_w3mod = (CASCFolder)fldr.Entries["x86_64"];
+                war3_w3mod = (CASCFolder)fldr.Folders["x86_64"];
             }
 
             return war3_w3mod;

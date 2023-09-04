@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>BetterTriggers</AssemblyName>
     <RootNamespace>BetterTriggers</RootNamespace>
   </PropertyGroup>
@@ -326,10 +326,10 @@
 
   <ItemGroup>
     <PackageReference Include="BCnEncoder.Net" Version="1.2.3" />
-    <PackageReference Include="CascLib" Version="1.0.19" />
+    <PackageReference Include="CascLib" Version="1.0.23" />
     <PackageReference Include="ini-parser" Version="2.5.2" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="War3Net.Build" Version="5.7.1" />

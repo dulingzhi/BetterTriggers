@@ -109,9 +109,9 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var cascFolder = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                CASCFile destSkins = (CASCFile)cascFolder.Entries["destructableskin.txt"];
-                CASCFile destData = (CASCFile)cascFolder.Entries["destructabledata.slk"];
+                var cascFolder = (CASCFolder)Casc.GetWar3ModFolder().Folders["units"];
+                CASCFile destSkins = (CASCFile)cascFolder.Files["destructableskin.txt"];
+                CASCFile destData = (CASCFile)cascFolder.Files["destructabledata.slk"];
                 using (Stream destructibleskin = Casc.GetCasc().OpenFile(destSkins.FullName))
                 using (Stream destructibleDataSLK = Casc.GetCasc().OpenFile(destData.FullName))
                 {

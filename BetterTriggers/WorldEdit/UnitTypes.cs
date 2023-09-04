@@ -131,10 +131,10 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                CASCFile cascFile = (CASCFile)units.Entries["unitdata.slk"];
-                CASCFile unitSkins = (CASCFile)units.Entries["unitskin.txt"];
-                CASCFile campaignFuncFile = (CASCFile)units.Entries["campaignunitfunc.txt"];
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["units"];
+                CASCFile cascFile = (CASCFile)units.Files["unitdata.slk"];
+                CASCFile unitSkins = (CASCFile)units.Files["unitskin.txt"];
+                CASCFile campaignFuncFile = (CASCFile)units.Files["campaignunitfunc.txt"];
                 using (Stream unitDataSlk = Casc.GetCasc().OpenFile(cascFile.FullName))
                 using (Stream unitSkin = Casc.GetCasc().OpenFile(unitSkins.FullName))
                 using (Stream campaignFuncStream = Casc.GetCasc().OpenFile(campaignFuncFile.FullName))

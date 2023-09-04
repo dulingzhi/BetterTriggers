@@ -103,20 +103,20 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["units"];
                 /* TODO:
                  * We are loading too many upgrades from this.
                  * There are 'upgrades' for 'Chaos Conversions' and other stuff
                  * which are not actual upgrades that show up in the object editor.
                 */
-                CASCFile abilityData = (CASCFile)units.Entries["upgradedata.slk"];
+                CASCFile abilityData = (CASCFile)units.Files["upgradedata.slk"];
                 upgradedata = Casc.GetCasc().OpenFile(abilityData.FullName);
 
-                CASCFile humanUp = (CASCFile)units.Entries["humanupgradefunc.txt"];
-                CASCFile orcUp = (CASCFile)units.Entries["orcupgradefunc.txt"];
-                CASCFile undeadUp = (CASCFile)units.Entries["undeadupgradefunc.txt"];
-                CASCFile nightelfUp = (CASCFile)units.Entries["nightelfupgradefunc.txt"];
-                CASCFile campaignUp = (CASCFile)units.Entries["campaignupgradefunc.txt"];
+                CASCFile humanUp = (CASCFile)units.Files["humanupgradefunc.txt"];
+                CASCFile orcUp = (CASCFile)units.Files["orcupgradefunc.txt"];
+                CASCFile undeadUp = (CASCFile)units.Files["undeadupgradefunc.txt"];
+                CASCFile nightelfUp = (CASCFile)units.Files["nightelfupgradefunc.txt"];
+                CASCFile campaignUp = (CASCFile)units.Files["campaignupgradefunc.txt"];
                 StreamReader sr;
                 StringBuilder text = new StringBuilder();
                 sr = new StreamReader(Casc.GetCasc().OpenFile(humanUp.FullName));

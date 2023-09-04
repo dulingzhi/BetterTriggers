@@ -93,13 +93,13 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["units"];
                 /* TODO:
                  * We are loading too many buffs from this.
                  * There are 'buffs' for other stuff which are not
                  * actual buffs that show up in the object editor.
                 */
-                CASCFile abilityData = (CASCFile)units.Entries["abilitybuffdata.slk"];
+                CASCFile abilityData = (CASCFile)units.Files["abilitybuffdata.slk"];
                 buffdata = Casc.GetCasc().OpenFile(abilityData.FullName);
             }
 

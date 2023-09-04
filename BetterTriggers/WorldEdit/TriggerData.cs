@@ -79,16 +79,16 @@ namespace BetterTriggers.WorldEdit
                 ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
                 ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/jasshelper.exe";
 
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-                CASCFile commonJ = (CASCFile)units.Entries["common.j"];
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["scripts"];
+                CASCFile commonJ = (CASCFile)units.Files["common.j"];
                 Casc.SaveFile(commonJ, pathCommonJ);
-                units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-                CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
+                units = (CASCFolder)Casc.GetWar3ModFolder().Folders["scripts"];
+                CASCFile blizzardJ = (CASCFile)units.Files["Blizzard.j"];
                 Casc.SaveFile(blizzardJ, pathBlizzardJ);
 
 
-                var ui = (CASCFolder)Casc.GetWar3ModFolder().Entries["ui"];
-                CASCFile triggerData = (CASCFile)ui.Entries["triggerdata.txt"];
+                var ui = (CASCFolder)Casc.GetWar3ModFolder().Folders["ui"];
+                CASCFile triggerData = (CASCFile)ui.Files["triggerdata.txt"];
                 var file = Casc.GetCasc().OpenFile(triggerData.FullName);
                 var reader = new StreamReader(file);
                 var text = reader.ReadToEnd();
@@ -98,8 +98,8 @@ namespace BetterTriggers.WorldEdit
                 // --- TRIGGER CATEGORIES --- //
 
                 var triggerCategories = data.Sections["TriggerCategories"];
-                var replText = (CASCFolder)Casc.GetWar3ModFolder().Entries["replaceabletextures"];
-                var worldEditUI = (CASCFolder)replText.Entries["worldeditui"];
+                var replText = (CASCFolder)Casc.GetWar3ModFolder().Folders["replaceabletextures"];
+                var worldEditUI = (CASCFolder)replText.Folders["worldeditui"];
                 foreach (var category in triggerCategories)
                 {
                     string[] values = category.Value.Split(",");
@@ -113,7 +113,7 @@ namespace BetterTriggers.WorldEdit
                     if (values.Length == 3)
                         shouldDisplay = false;
 
-                    CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
+                    CASCFile icon = (CASCFile)worldEditUI.Files[texturePath];
                     Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
 
                     System.Drawing.Bitmap image = Images.ReadImage(stream);
