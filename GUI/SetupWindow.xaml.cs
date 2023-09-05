@@ -34,7 +34,7 @@ namespace GUI
             settings.war3root = textBoxRoot.Text;
             Settings.Save(settings);
 
-            if(Casc.Load())
+            if(DataReader.Load())
             {
                 LoadingCascWindow window = new LoadingCascWindow();
                 window.Show();

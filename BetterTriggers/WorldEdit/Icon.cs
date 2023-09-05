@@ -53,8 +53,8 @@ namespace BetterTriggers.WorldEdit
                 }
             }
 
-            if (Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(path, ".dds")))
-                return Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(path, ".dds")));
+            if (DataReader.FileExists(Path.ChangeExtension(path, ".dds")))
+                return Images.ReadImage(DataReader.OpenFile(Path.ChangeExtension(path, ".dds")));
 
             return new Bitmap(4, 4);
         }

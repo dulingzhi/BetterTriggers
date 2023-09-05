@@ -79,17 +79,10 @@ namespace BetterTriggers.WorldEdit
                 ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
                 ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/jasshelper.exe";
 
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["scripts"];
-                CASCFile commonJ = (CASCFile)units.Files["common.j"];
-                Casc.SaveFile(commonJ, pathCommonJ);
-                units = (CASCFolder)Casc.GetWar3ModFolder().Folders["scripts"];
-                CASCFile blizzardJ = (CASCFile)units.Files["Blizzard.j"];
-                Casc.SaveFile(blizzardJ, pathBlizzardJ);
+                DataReader.Export(@"scripts\common.j", pathCommonJ);
+                DataReader.Export(@"scripts\Blizzard.j", pathBlizzardJ);
 
-
-                var ui = (CASCFolder)Casc.GetWar3ModFolder().Folders["ui"];
-                CASCFile triggerData = (CASCFile)ui.Files["triggerdata.txt"];
-                var file = Casc.GetCasc().OpenFile(triggerData.FullName);
+                var file = DataReader.OpenFile(@"ui\triggerdata.txt");
                 var reader = new StreamReader(file);
                 var text = reader.ReadToEnd();
 
@@ -98,8 +91,6 @@ namespace BetterTriggers.WorldEdit
                 // --- TRIGGER CATEGORIES --- //
 
                 var triggerCategories = data.Sections["TriggerCategories"];
-                var replText = (CASCFolder)Casc.GetWar3ModFolder().Folders["replaceabletextures"];
-                var worldEditUI = (CASCFolder)replText.Folders["worldeditui"];
                 foreach (var category in triggerCategories)
                 {
                     string[] values = category.Value.Split(",");
@@ -113,8 +104,7 @@ namespace BetterTriggers.WorldEdit
                     if (values.Length == 3)
                         shouldDisplay = false;
 
-                    CASCFile icon = (CASCFile)worldEditUI.Files[texturePath];
-                    Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
+                    Stream stream = DataReader.OpenFile(Path.Combine(@"replaceabletextures\worldeditui", texturePath));
 
                     System.Drawing.Bitmap image = Images.ReadImage(stream);
                     Category.Create(category.KeyName, image, WE_STRING, shouldDisplay);
@@ -178,7 +168,7 @@ namespace BetterTriggers.WorldEdit
 
             // --- Loads depending on version --- //
 
-            if (Casc.GameVersion.Minor >= 31)
+            if (DataReader.GameVersion.Minor >= 31)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -191,13 +181,13 @@ namespace BetterTriggers.WorldEdit
                 customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31.txt"));
                 customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31_Lua.txt"));
             }
-            if(Casc.GameVersion.Minor >= 32)
+            if(DataReader.GameVersion.Minor >= 32)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_32.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadTriggerDataFromIni(dataCustom);
             }
-            if (Casc.GameVersion.Minor >= 33)
+            if (DataReader.GameVersion.Minor >= 33)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_33.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);

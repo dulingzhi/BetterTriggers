@@ -90,14 +90,12 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["units"];
                 /* TODO:
                  * We are loading too many abilities from this.
                  * There are 'abilities' for 'Chaos Conversions' and other stuff
                  * which are not actual abilites that show up in the object editor.
                 */
-                CASCFile abilityData = (CASCFile)units.Files["abilitydata.slk"];
-                abilitydata = Casc.GetCasc().OpenFile(abilityData.FullName);
+                abilitydata = DataReader.OpenFile(@"units\abilitydata.slk");
             }
 
             SylkParser sylkParser = new SylkParser();

@@ -96,7 +96,7 @@ namespace GUI
 
             menuTools.Header = Locale.Translate(menuTools.Header as string);
 
-            btnGameVersion.Content = "Game Version: " + Casc.GameVersion;
+            btnGameVersion.Content = "Game Version: " + DataReader.GameVersion;
 
             // Load keybindings
             Keybindings keybindings = Keybindings.Load();

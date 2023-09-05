@@ -131,13 +131,9 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["units"];
-                CASCFile cascFile = (CASCFile)units.Files["unitdata.slk"];
-                CASCFile unitSkins = (CASCFile)units.Files["unitskin.txt"];
-                CASCFile campaignFuncFile = (CASCFile)units.Files["campaignunitfunc.txt"];
-                using (Stream unitDataSlk = Casc.GetCasc().OpenFile(cascFile.FullName))
-                using (Stream unitSkin = Casc.GetCasc().OpenFile(unitSkins.FullName))
-                using (Stream campaignFuncStream = Casc.GetCasc().OpenFile(campaignFuncFile.FullName))
+                using (Stream unitDataSlk = DataReader.OpenFile(@"units\unitdata.slk"))
+                using (Stream unitSkin = DataReader.OpenFile(@"units\unitskin.txt"))
+                using (Stream campaignFuncStream = DataReader.OpenFile(@"units\campaignunitfunc.txt"))
                 {
                     reader = new StreamReader(unitSkin);
                     text = reader.ReadToEnd();
@@ -188,7 +184,7 @@ namespace BetterTriggers.WorldEdit
                 new Icon(icon, UnitTypes.GetName(unitType.Id), "Unit");
 
                 if (!isTest)
-                    unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
+                    unitType.Image = Images.ReadImage(DataReader.OpenFile(Path.ChangeExtension(icon, ".dds")));
             }
 
             var campaignSections = campaignFunc.Sections;
@@ -293,8 +289,8 @@ namespace BetterTriggers.WorldEdit
                     Stream stream = null;
                     if (!IsTest)
                     {
-                        if (Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds")))
-                            stream = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds"));
+                        if (DataReader.FileExists(Path.ChangeExtension(iconPath, ".dds")))
+                            stream = DataReader.OpenFile(Path.ChangeExtension(iconPath, ".dds"));
                     }
 
                     if (stream == null)

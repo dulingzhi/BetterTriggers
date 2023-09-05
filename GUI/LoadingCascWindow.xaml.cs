@@ -56,7 +56,7 @@ namespace GUI
         {
             BetterTriggers.Init.OnNextData += Init_NextData;
 
-            isCascValid = Casc.Load();
+            isCascValid = DataReader.Load();
             if(isCascValid)
             {
                 (sender as BackgroundWorker).ReportProgress(50);

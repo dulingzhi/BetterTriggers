@@ -99,9 +99,7 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var folderDoodads = (CASCFolder)Casc.GetWar3ModFolder().Folders["doodads"];
-                CASCFile doodadSkins = (CASCFile)folderDoodads.Files["doodadskins.txt"];
-                using (Stream doodadskin = Casc.GetCasc().OpenFile(doodadSkins.FullName))
+                using (Stream doodadskin = DataReader.OpenFile(@"doodads\doodadskins.txt"))
                 {
                     var reader = new StreamReader(doodadskin);
                     text = reader.ReadToEnd();

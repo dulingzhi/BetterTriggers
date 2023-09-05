@@ -253,12 +253,12 @@ namespace BetterTriggers.Controllers
             if (project.Version > War3Project.EditorVersion)
                 throw new Exception($"Project failed to load. Requires newer editor version.\n\nProject version: {project.Version}\nEditor version: {War3Project.EditorVersion}");
 
-            if (project.GameVersion > Casc.GameVersion)
-                throw new Exception($"Project failed to load. Requires newer game version.\n\nProject version: {project.GameVersion}\nGame version: {Casc.GameVersion}");
+            if (project.GameVersion > DataReader.GameVersion)
+                throw new Exception($"Project failed to load. Requires newer game version.\n\nProject version: {project.GameVersion}\nGame version: {DataReader.GameVersion}");
 
 
             project.Version = War3Project.EditorVersion; // updates version.
-            project.GameVersion = Casc.GameVersion; // updates game version.
+            project.GameVersion = DataReader.GameVersion; // updates game version.
             src = Path.Combine(Path.GetDirectoryName(filepath), "src");
             ContainerProject container = new ContainerProject();
             container.LoadProject(project, filepath, src);

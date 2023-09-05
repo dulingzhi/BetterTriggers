@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
-using CASCLib;
 using IniParser.Model;
 using System;
 using System.Collections.Generic;
@@ -103,32 +102,27 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Folders["units"];
                 /* TODO:
                  * We are loading too many upgrades from this.
                  * There are 'upgrades' for 'Chaos Conversions' and other stuff
                  * which are not actual upgrades that show up in the object editor.
                 */
-                CASCFile abilityData = (CASCFile)units.Files["upgradedata.slk"];
-                upgradedata = Casc.GetCasc().OpenFile(abilityData.FullName);
+                upgradedata = DataReader.OpenFile(@"units\upgradedata.slk");
 
-                CASCFile humanUp = (CASCFile)units.Files["humanupgradefunc.txt"];
-                CASCFile orcUp = (CASCFile)units.Files["orcupgradefunc.txt"];
-                CASCFile undeadUp = (CASCFile)units.Files["undeadupgradefunc.txt"];
-                CASCFile nightelfUp = (CASCFile)units.Files["nightelfupgradefunc.txt"];
-                CASCFile campaignUp = (CASCFile)units.Files["campaignupgradefunc.txt"];
-                StreamReader sr;
+                var files = new[]
+                {
+                    @"units\humanupgradefunc.txt",
+                    @"units\orcupgradefunc.txt",
+                    @"units\undeadupgradefunc.txt",
+                    @"units\nightelfupgradefunc.txt",
+                    @"units\campaignupgradefunc.txt"
+                };
+
                 StringBuilder text = new StringBuilder();
-                sr = new StreamReader(Casc.GetCasc().OpenFile(humanUp.FullName));
-                text.Append(sr.ReadToEnd());
-                sr = new StreamReader(Casc.GetCasc().OpenFile(orcUp.FullName));
-                text.Append(sr.ReadToEnd());
-                sr = new StreamReader(Casc.GetCasc().OpenFile(undeadUp.FullName));
-                text.Append(sr.ReadToEnd());
-                sr = new StreamReader(Casc.GetCasc().OpenFile(nightelfUp.FullName));
-                text.Append(sr.ReadToEnd());
-                sr = new StreamReader(Casc.GetCasc().OpenFile(campaignUp.FullName));
-                text.Append(sr.ReadToEnd());
+                foreach (var file in files)
+                {
+                    text.Append(new StreamReader(DataReader.OpenFile(file)).ReadToEnd());
+                }
                 upgradeFunc = IniFileConverter.GetIniData(text.ToString());
             }
 

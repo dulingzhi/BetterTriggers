@@ -33,7 +33,7 @@ namespace Tests
             Console.WriteLine("-----------");
             Console.WriteLine("");
 
-            Casc.GameVersion = new Version(1, 35, 1); // hack. We need the newest version to load our custom frame definition script.
+            DataReader.GameVersion = new Version(1, 35, 1); // hack. We need the newest version to load our custom frame definition script.
             BetterTriggers.Init.Initialize(true);
 
 
