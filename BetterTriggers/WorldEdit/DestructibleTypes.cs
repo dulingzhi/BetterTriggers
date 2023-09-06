@@ -88,9 +88,19 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
+        private static void LoadFromMpq()
+        {
+
+        }
+
         internal static void LoadFromCASC(bool isTest)
         {
             destructibles = new Dictionary<string, DestructibleType>();
+            if (!isTest && !DataReader.reforge)
+            {
+                LoadFromMpq();
+                return;
+            }
 
             SylkParser sylkParser = new SylkParser();
             SylkTable table;

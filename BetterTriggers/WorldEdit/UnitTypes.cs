@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using CASCLib;
+using ICSharpCode.Decompiler.IL;
 using IniParser.Model;
 using IniParser.Parser;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -103,9 +105,105 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
+        private static void LoadFromMpq()
+        {
+            StreamReader reader;
+            SylkTable table;
+            SylkTable uiTable;
+            string text = string.Empty;
+            IniData campaignFunc;
+
+
+            using (Stream slk = DataReader.OpenFile(@"units\unitdata.slk"))
+                table = new SylkParser1().Parse(slk);
+            using (Stream txt = DataReader.OpenFile(@"units\campaignunitfunc.txt"))
+                campaignFunc = IniFileConverter.GetIniData(new StreamReader(txt).ReadToEnd());
+            using (Stream slk = DataReader.OpenFile(@"units\unitui.slk"))
+                uiTable = new SylkParser1().Parse(slk);
+
+            var files = new string[] { "HumanUnitFunc.txt", "NeutralUnitFunc.txt", "NightElfUnitFunc.txt", "OrcUnitFunc.txt", "UndeadUnitFunc.txt" };
+            foreach (var file in files)
+            {
+                using (Stream unitSkin = DataReader.OpenFile(Path.Combine("units", file)))
+                    text += new StreamReader(unitSkin).ReadToEnd();
+                text += "\r\n";
+            }
+
+            int count = table.Count();
+            for (int i = 1; i < count; i++)
+            {
+                var row = table.ElementAt(i);
+                UnitType unitType = new UnitType()
+                {
+                    Id = (string)row.GetValue(0),
+                    Sort = (string)row.GetValue(1),
+                    Race = (string)row.GetValue(3),
+                };
+                if (unitType.Id == null)
+                {
+                    continue;
+                }
+
+                unitTypes.TryAdd(unitType.Id, unitType);
+            }
+
+            for (int i = 0; i < uiTable.Count(); i++)
+            {
+                var row = uiTable.ElementAt(i);
+                var id = (string)row.GetValue(0);
+                if (id != null && unitTypes.TryGetValue(id, out var u))
+                {
+                    u.Model = (string)row.GetValue(1);
+                    u.isSpecial = row.GetValue(7) is 1;
+                }
+            }
+
+
+            var campaignSections = campaignFunc.Sections;
+            var data = IniFileConverter.GetIniData(text);
+            var unitTypesList = GetBase();
+            for (int i = 0; i < unitTypesList.Count; i++)
+            {
+                var unitType = unitTypesList[i];
+                unitType.Name = Locale.GetUnitName(unitType.Id); // Spaghetti
+                unitType.isCampaign = campaignSections.ContainsSection(unitType.Id);
+
+                var section = data[unitType.Id];
+                if (section.Count == 0)
+                {
+                    continue;
+                }
+
+                unitType.Icon = section["Art"];
+
+                new Icon(unitType.Icon, UnitTypes.GetName(unitType.Id), "Unit");
+
+                unitType.Image = Images.ReadImage(DataReader.OpenFile(unitType.Icon));
+            }
+
+            var enumerator = campaignSections.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var section = enumerator.Current;
+                string sectionName = section.SectionName;
+                var keys = section.Keys.GetEnumerator();
+                while (keys.MoveNext())
+                {
+                    var key = keys.Current;
+                    if (key.KeyName == "ScoreScreenIcon")
+                        new Icon(key.Value, UnitTypes.GetName(sectionName), "Unit - Special");
+                }
+            }
+        }
+
         internal static void LoadFromCASC(bool isTest)
         {
             unitTypes = new Dictionary<string, UnitType>();
+            if (!isTest && !DataReader.reforge)
+            {
+                LoadFromMpq();
+                return;
+            }
 
             SylkParser sylkParser = new SylkParser();
             StreamReader reader;

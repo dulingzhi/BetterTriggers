@@ -22,10 +22,20 @@ namespace BetterTriggers.WorldEdit
             return assetModels;
         }
 
+        private static void LoadFromMpq()
+        {
+
+        }
 
         internal static void Load(bool isTest = false)
         {
             assetModels.Clear();
+            if (!isTest && !DataReader.reforge)
+            {
+                LoadFromMpq();
+                return;
+            }
+
             var unitData = UnitTypes.GetBase();
             var destData = DestructibleTypes.GetBase();
             var doodData = DoodadTypes.GetBase();

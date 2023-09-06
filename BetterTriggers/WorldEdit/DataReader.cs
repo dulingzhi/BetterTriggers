@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,8 @@ namespace BetterTriggers.WorldEdit
 {
     public class DataReader
     {
-        private static bool reforge = false;
+        private static bool _reforge = false;
+        public static bool reforge { get => _reforge; }
         private static Mpq mpq = null;
 
         public static System.Version GameVersion;
@@ -17,7 +19,7 @@ namespace BetterTriggers.WorldEdit
         public static bool Load()
         {
             Settings settings = Settings.Load();
-            reforge = File.Exists(Path.Combine(settings.war3root, @"Data\data\data.000"));
+            _reforge = File.Exists(Path.Combine(settings.war3root, @"Data\data\data.000"));
             if (reforge)
             {
                 if (Casc.Load())
@@ -28,7 +30,14 @@ namespace BetterTriggers.WorldEdit
                 return false;
             }
             mpq = new Mpq();
-            return mpq.Load(settings.war3root);
+            if (mpq.Load(settings.war3root))
+            {
+                var ver = FileVersionInfo.GetVersionInfo(Path.Combine(settings.war3root, "war3.exe"));
+                GameVersion = new Version(ver.FileMajorPart, ver.FileMinorPart, ver.FileBuildPart, ver.FilePrivatePart);
+                return true;
+            }
+
+            return false;
         }
 
         public static bool FileExists(string path)
@@ -59,6 +68,11 @@ namespace BetterTriggers.WorldEdit
             var stream = OpenFile(srcPath);
             using var destStream = File.Create(destPath);
             stream.CopyTo(destStream);
+        }
+
+        public static string GetImageExtension()
+        {
+            return reforge ? ".dds" : ".blp";
         }
     }
 }

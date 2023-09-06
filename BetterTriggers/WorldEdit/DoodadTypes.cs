@@ -83,9 +83,19 @@ namespace BetterTriggers.WorldEdit
             return doodType.DisplayName;
         }
 
+        private static void LoadFromMpq()
+        {
+
+        }
+
         internal static void LoadFromCASC(bool isTest)
         {
             doodads = new Dictionary<string, DoodadType>();
+            if (!isTest && !DataReader.reforge)
+            {
+                LoadFromMpq();
+                return;
+            }
 
             string text;
 

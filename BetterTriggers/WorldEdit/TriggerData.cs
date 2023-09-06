@@ -99,7 +99,7 @@ namespace BetterTriggers.WorldEdit
                         continue;
 
                     string WE_STRING = values[0];
-                    string texturePath = Path.GetFileName(values[1] + ".dds");
+                    string texturePath = Path.GetFileName(values[1] + DataReader.GetImageExtension());
                     bool shouldDisplay = true;
                     if (values.Length == 3)
                         shouldDisplay = false;
@@ -241,12 +241,13 @@ namespace BetterTriggers.WorldEdit
             {
                 string[] values = type.Value.Split(",");
                 string key = type.KeyName;
-                bool canBeGlobal = values[1] == "1" ? true : false;
-                bool canBeCompared = values[2] == "1" ? true : false;
-                string displayName = values[3];
+                int index = DataReader.reforge ? 1 : 0;
+                bool canBeGlobal = values[index++] == "1";
+                bool canBeCompared = values[index++] == "1";
+                string displayName = values[index++];
                 string baseType = null;
-                if (values.Length >= 5)
-                    baseType = values[4];
+                if (values.Length > index)
+                    baseType = values[index];
 
                 Types.Create(key, canBeGlobal, canBeCompared, displayName, baseType);
             }
@@ -262,9 +263,10 @@ namespace BetterTriggers.WorldEdit
                 string[] values = preset.Value.Split(",");
                 string key = preset.KeyName;
 
-                string variableType = values[1];
-                string codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
-                string displayText = Locale.Translate(values[3]);
+                int index = DataReader.reforge ? 1 : 0;
+                string variableType = values[index++];
+                string codeText = values[index++].Replace("\"", "").Replace("`", "").Replace("|", "\"");
+                string displayText = Locale.Translate(values[index]);
 
                 ConstantTemplate constant = new ConstantTemplate()
                 {
@@ -384,7 +386,7 @@ namespace BetterTriggers.WorldEdit
                     {
                         returnType = "event";
 
-                        for (int i = 1; i < _params.Length; i++)
+                        for (int i = DataReader.reforge ? 1 : 0; i < _params.Length; i++)
                         {
                             parameters.Add(new ParameterTemplate() { returnType = _params[i] });
                         }
@@ -393,7 +395,7 @@ namespace BetterTriggers.WorldEdit
                     {
                         returnType = "boolean";
 
-                        for (int i = 1; i < _params.Length; i++)
+                        for (int i = DataReader.reforge ? 1 : 0; i < _params.Length; i++)
                         {
                             parameters.Add(new ParameterTemplate() { returnType = _params[i] });
                         }
@@ -402,15 +404,15 @@ namespace BetterTriggers.WorldEdit
                     {
                         returnType = "nothing";
 
-                        for (int i = 1; i < _params.Length; i++)
+                        for (int i = DataReader.reforge ? 1 : 0; i < _params.Length; i++)
                         {
                             parameters.Add(new ParameterTemplate() { returnType = _params[i] });
                         }
                     }
                     else if (sectionName == "TriggerCalls")
                     {
-                        returnType = _params[2];
-                        for (int i = 3; i < _params.Length; i++)
+                        returnType = _params[DataReader.reforge ? 2 : 1];
+                        for (int i = DataReader.reforge ? 3 : 2; i < _params.Length; i++)
                         {
                             parameters.Add(new ParameterTemplate() { returnType = _params[i] });
                         }

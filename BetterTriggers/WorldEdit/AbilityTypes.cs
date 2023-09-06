@@ -79,9 +79,20 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
+        private static void LoadFromMpq()
+        {
+
+        }
+
         internal static void LoadFromCASC(bool isTest)
         {
             abilities = new Dictionary<string, AbilityType>();
+
+            if (!isTest && !DataReader.reforge)
+            {
+                LoadFromMpq();
+                return;
+            }
 
             Stream abilitydata;
             if (isTest)

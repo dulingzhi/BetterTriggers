@@ -82,9 +82,20 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
+        private static void LoadFromMpq()
+        {
+
+        }
+
         internal static void LoadFromCASC(bool isTest)
         {
             upgrades = new Dictionary<string, UpgradeType>();
+            if (!isTest && !DataReader.reforge)
+            {
+                LoadFromMpq();
+                return;
+            }
+
             Stream upgradedata;
             IniData upgradeFunc;
 

@@ -82,9 +82,19 @@ namespace BetterTriggers.WorldEdit
             return itemType.DisplayName;
         }
 
+        private static void LoadFromMpq()
+        {
+
+        }
+
         internal static void LoadFromCASC(bool isTest)
         {
             items = new Dictionary<string, ItemType>();
+            if (!isTest && !DataReader.reforge)
+            {
+                LoadFromMpq();
+                return;
+            }
 
             Stream itemskin;
             Stream itemfunc;

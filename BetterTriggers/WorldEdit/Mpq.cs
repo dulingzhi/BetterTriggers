@@ -25,7 +25,7 @@ namespace BetterTriggers.WorldEdit
                         "War3Patch.mpq" };
                 for (var i = 3; i >= 0; i--)
                 {
-                    archives[i] = MpqArchive.Open(files[i]);
+                    archives[i] = MpqArchive.Open(Path.Combine(path, files[i]));
                 }
 
                 return true;
