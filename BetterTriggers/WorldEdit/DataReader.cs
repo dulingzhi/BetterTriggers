@@ -63,6 +63,41 @@ namespace BetterTriggers.WorldEdit
             return mpq.Open(path);
         }
 
+        public static string ReadAllText(string path)
+        {
+            var stream = OpenFile(path);
+            if (stream != null)
+            {
+                return new StreamReader(stream).ReadToEnd();
+            }
+
+            return string.Empty;
+        }
+
+        public static string[] ReadAllLines(string path)
+        {
+            var stream = OpenFile(path);
+            if (stream != null)
+            {
+                var liens = new List<string>();
+                var reader = new StreamReader(stream);
+
+                while (true)
+                {
+                    var line = reader.ReadLine();
+                    if (line == null)
+                    {
+                        break;
+                    }
+                    liens.Add(line);
+                }
+
+                return liens.ToArray();
+            }
+
+            return null;
+        }
+
         public static void Export(string srcPath, string destPath)
         {
             var stream = OpenFile(srcPath);
